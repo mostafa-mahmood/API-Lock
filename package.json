@@ -1,0 +1,26 @@
+{
+  "name": "keylock",
+  "version": "1.0.0",
+  "description": "simple tool for API key management",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/test/dev-run.ts"
+  },
+  "keywords": [],
+  "author": "mostafa-mahmood",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.10",
+    "@types/pg": "^8.15.4",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.20.3"
+  }
+}
