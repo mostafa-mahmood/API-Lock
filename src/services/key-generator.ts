@@ -3,8 +3,8 @@ import {ApiKey} from '../types/api-key';
 import {generateUniqueId, returnCurrentTimestamp} from '../utils/common-utils';
 
 export function generateKeyObject(userId:string, scopes:string[], 
-                                 is_one_time: boolean,
-                                 expires_at?: Date): ApiKey {
+                                 isOneTime: boolean,
+                                 expiresAt?: Date): ApiKey {
           
           const rawKey: string = generateRawKey(userId);
           const currentTimestamp: Date = returnCurrentTimestamp();
@@ -16,9 +16,9 @@ export function generateKeyObject(userId:string, scopes:string[],
                     key: rawKey,
                     scopes: scopes,
                     created_at: currentTimestamp,
-                    expires_at: expires_at,
+                    expires_at: expiresAt,
                     revoked: false,
-                    is_one_time: is_one_time
+                    is_one_time: isOneTime
           }
           return keyObj;
 }

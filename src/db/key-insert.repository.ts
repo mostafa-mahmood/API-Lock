@@ -3,7 +3,7 @@ import {config} from '../config/config';
 import {ApiKey} from '../types/api-key';
 import {sha256Hash} from '../utils/common-utils';
 
-export async function insertKey(keyObj: ApiKey): Promise<void> {
+export async function insertKey(keyObj: ApiKey) {
 
           const keysTable = config.app.db_table;
           const hashed_key = sha256Hash(keyObj.key);

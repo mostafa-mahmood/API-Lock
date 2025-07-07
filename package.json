@@ -4,7 +4,7 @@
   "description": "simple tool for API key management",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx src/test/dev-run.ts"
+    "dev": "tsx src/test/server-run.ts"
   },
   "keywords": [],
   "author": "mostafa-mahmood",
@@ -14,7 +14,8 @@
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "pg": "^8.16.3",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^3.25.74"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
