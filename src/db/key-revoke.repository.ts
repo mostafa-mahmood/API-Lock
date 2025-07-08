@@ -6,13 +6,16 @@ export async function revokeKey(hashedKey: string) {
 
           const query = `
           UPDATE ${tableName}
-          SET revoked = $1,
-          revoked_at = $2
-          WHERE hashed_key = $3`
+          SET revoked = true,
+          revoked_at = $1
+          WHERE hashed_key = $2 AND revoked = false
+          RETURNING revoked_at;
+          `;
 
-          const values = [true, new Date(), hashedKey];
-
-          const result = await db.query(query, values);
-
-          return (result.rowCount as number) > 0;
+          const result = await db.query(query, [new Date(), hashedKey]);
+          return {
+                    "success": (result.rowCount as number) > 0,
+                    "revoked_at": result.rows[0]?.revoked_at
+          }
+          
 }

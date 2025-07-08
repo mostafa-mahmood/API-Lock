@@ -4,6 +4,8 @@ import { generateKeyObject } from "../../services/key-generator";
 import { validateKey } from "../../services/key-validator";
 import { insertKey } from "../../db/key-insert.repository";
 import { updateLastUsed } from "../../db/update-last-used.repository";
+import { keyRevoker } from "../../services/key-revoker";
+import { sha256Hash } from "../../utils/common-utils";
 
 export const generateKeyHandler: RequestHandler = async (req: Request, res: Response) => {
 
@@ -49,5 +51,22 @@ export const validateKeyHandler: RequestHandler = async (req: Request, res: Resp
 
           await updateLastUsed(validationObj.keyId);
           res.status(200).json(validationObj);
+          return;
+}
+
+export const revokeKeyHandler: RequestHandler = async (req: Request, res: Response) => {
+          const authHeader = req.headers.authorization;
+
+          if(!authHeader) {
+                    res.status(401).json({
+                              error: 'Missing Authorization Header'
+                    });
+                    return;
+          }
+
+          const rawKey = authHeader.replace(/^(Bearer|ApiKey)\s+/i, '').trim();
+          const hashedKey = sha256Hash(rawKey);
+          const revokeObj = await keyRevoker(hashedKey);
+          res.status(200).json(revokeObj);
           return;
 }
