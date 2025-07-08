@@ -3,6 +3,7 @@ import { generateRequestSchema } from "../../schemas/key.schema";
 import { generateKeyObject } from "../../services/key-generator";
 import { validateKey } from "../../services/key-validator";
 import { insertKey } from "../../db/key-insert.repository";
+import { updateLastUsed } from "../../db/update-last-used.repository";
 
 export const generateKeyHandler: RequestHandler = async (req: Request, res: Response) => {
 
@@ -46,6 +47,7 @@ export const validateKeyHandler: RequestHandler = async (req: Request, res: Resp
                     return;
           }
 
+          await updateLastUsed(validationObj.keyId);
           res.status(200).json(validationObj);
           return;
 }

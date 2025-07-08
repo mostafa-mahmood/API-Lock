@@ -4,16 +4,23 @@ import { QueryResult } from 'pg';
 import { UUID } from 'crypto';
 
 
-interface validationObj {
-          keyId?: UUID,
-          userId?: string,
-          scopes?: string[],
-          valid: boolean,
-          error?: string,
-          revokedAt?: Date,
-          expiredAt?: Date,
+interface ValidValidationObj {
+  keyId: UUID;
+  userId: string;
+  scopes: string[];
+  valid: true;
 }
-export async function validateKey(rawKey: string): Promise<validationObj> {
+
+interface InvalidValidationObj {
+  valid: false;
+  error: string;
+  revokedAt?: Date;
+  expiredAt?: Date;
+}
+
+type ValidationObj = ValidValidationObj | InvalidValidationObj;
+
+export async function validateKey(rawKey: string): Promise<ValidationObj> {
           const hashedKey: string = sha256Hash(rawKey);
           const queryResult: QueryResult<any> = await selectKey(hashedKey);
           const row = queryResult.rows[0];
