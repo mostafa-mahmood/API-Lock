@@ -1,7 +1,8 @@
 import { sha256Hash } from '../utils/common-utils';
 import { selectKey } from '../db/key-select.repository';
 import { QueryResult } from 'pg';
-import { UUID } from 'crypto';
+import { KeyObject, UUID } from 'crypto';
+import { keyRevoker } from './key-revoker';
 
 
 interface ValidValidationObj {
@@ -33,7 +34,7 @@ export async function validateKey(rawKey: string): Promise<ValidationObj> {
                     }
           }
 
-          if(row.revoked === true) {
+          if(row.revoked) {
                     return {
                               valid: false,
                               error: "Key is revoked",
@@ -47,6 +48,10 @@ export async function validateKey(rawKey: string): Promise<ValidationObj> {
                               error: "Key expired",
                               expiredAt: row.expires_at
                     }
+          }
+
+          if(row.is_one_time) {
+                    await keyRevoker(hashedKey);
           }
 
           return {

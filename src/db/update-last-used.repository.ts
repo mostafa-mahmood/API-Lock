@@ -1,11 +1,13 @@
 import { db } from "./index";
 import { UUID } from 'crypto';
+import { config } from "../config/config";
 
 export async function updateLastUsed(keyId: UUID): Promise<void> {
+          const tableName = config.app.db_table;
           const currentDate = new Date();
           
           const query = `
-          UPDATE api_keys 
+          UPDATE ${tableName} 
           SET last_used = $1
           WHERE key_id = $2`;
 
